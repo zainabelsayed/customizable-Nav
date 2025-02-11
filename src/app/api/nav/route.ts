@@ -65,7 +65,7 @@ export async function POST(req: Request) {
 
     // Safely write the file
     try {
-      writeFileSync(filePath, JSON.stringify(items, null, 2));
+      writeFileSync(filePath, JSON.stringify(items));
     } catch (fileError) {
       console.error("🚨 File Write Error:", fileError);
       return NextResponse.json(
