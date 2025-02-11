@@ -32,7 +32,11 @@ const SideMenu = () => {
         closeEdit={() => setIsEdit(false)}
         saveMenu={() => setSave(true)}
       />
-      <SideMenuList isEdit={isEdit} save={save} />
+      <SideMenuList
+        isEdit={isEdit}
+        save={save}
+        toggleSave={() => setSave(false)}
+      />
     </div>
   );
 };

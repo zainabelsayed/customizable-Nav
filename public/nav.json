@@ -41,15 +41,15 @@
         "target": "/applications/john-doe"
       },
       {
-        "id": 10,
-        "title": "James Bond",
-        "target": "/applications/james-bond"
-      },
-      {
         "id": 20,
         "title": "Scarlett Johansson",
         "target": "/applications/scarlett-johansson",
         "visible": false
+      },
+      {
+        "id": 10,
+        "title": "James Bond",
+        "target": "/applications/james-bond"
       }
     ]
   },

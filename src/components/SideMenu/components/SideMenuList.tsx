@@ -9,9 +9,14 @@ import { useApi } from "@/hooks/useApi";
 interface SideMenuListProps {
   isEdit: boolean;
   save: boolean;
+  toggleSave: () => void;
 }
 
-const SideMenuList: React.FC<SideMenuListProps> = ({ isEdit, save }) => {
+const SideMenuList: React.FC<SideMenuListProps> = ({
+  isEdit,
+  save,
+  toggleSave,
+}) => {
   const [menuItems, setMenuItems] = React.useState<MenuItem[]>([]);
   const { data, request } = useApi<MenuItem[]>();
   const { request: saveNav } = useApi<MenuItem[]>();
@@ -29,6 +34,7 @@ const SideMenuList: React.FC<SideMenuListProps> = ({ isEdit, save }) => {
   React.useEffect(() => {
     if (save) {
       saveNav("nav", "POST", menuItems);
+      toggleSave();
     }
   }, [save, menuItems]);
 
