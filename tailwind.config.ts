@@ -8,9 +8,17 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        DM_Sans: ["DM Sans", "serif"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#48A74C",
+        wheat: "#F7F7F7",
+      },
+      fontSize: {
+        xxs: "9px",
       },
     },
   },
