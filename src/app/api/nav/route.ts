@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     }
 
     // Define file path
-    const filePath = path.join(process.cwd(), "public", "nav.json");
+    const filePath = path.join("/tmp", "nav.json");
 
     // Safely write the file
     try {
