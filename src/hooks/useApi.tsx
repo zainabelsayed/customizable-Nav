@@ -21,16 +21,13 @@ export function useApi<T>(): ApiResponse<T> {
       setError(null);
 
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/${url}`,
-          {
-            method,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: body ? JSON.stringify(body) : undefined,
-          }
-        );
+        const response = await fetch(`/api/${url}`, {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: body ? JSON.stringify(body) : undefined,
+        });
 
         const result = await response.json();
 

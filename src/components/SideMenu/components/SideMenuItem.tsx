@@ -77,7 +77,6 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    console.log(route);
     if (isEdit) return;
     router.push(route);
   };
@@ -144,7 +143,6 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
                 onClick={() => {
                   setIsHidden(false);
                   item.visible = true;
-                  console.log(item);
                 }}
               >
                 <img
@@ -161,7 +159,6 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
                   if (item.children) {
                     item.children.forEach((child) => (child.visible = false));
                   }
-                  console.log(item);
                 }}
               >
                 <img

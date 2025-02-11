@@ -54,7 +54,6 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const items = await req.json();
-    console.log("✅ Received Payload:", items);
 
     if (!Array.isArray(items)) {
       console.error("🚨 Invalid Data Type: Expected an array.");
@@ -67,7 +66,6 @@ export async function POST(req: Request) {
     // Safely write the file
     try {
       writeFileSync(filePath, JSON.stringify(items, null, 2));
-      console.log("✅ nav.json updated successfully!");
     } catch (fileError) {
       console.error("🚨 File Write Error:", fileError);
       return NextResponse.json(
