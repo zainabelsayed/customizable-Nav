@@ -5,8 +5,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import SideMenuItem from "./SideMenuItem";
 import { MenuItem } from "../types";
 import { useApi } from "@/hooks/useApi";
-import { useMobile } from "@/hooks/useMobile";
 import { TouchBackend } from "react-dnd-touch-backend";
+import { MultiBackend, TouchTransition } from "dnd-multi-backend";
 
 interface SideMenuListProps {
   isEdit: boolean;
@@ -22,7 +22,6 @@ const SideMenuList: React.FC<SideMenuListProps> = ({
   const [menuItems, setMenuItems] = React.useState<MenuItem[]>([]);
   const { data, request } = useApi<MenuItem[]>();
   const { request: saveNav } = useApi<MenuItem[]>();
-  const isMobile = useMobile();
 
   React.useEffect(() => {
     request("nav");
@@ -49,11 +48,19 @@ const SideMenuList: React.FC<SideMenuListProps> = ({
     const updatedItems = moveNestedItem(menuItems, dragId, hoverId, parentId);
     setMenuItems(updatedItems);
   };
+
+  const HTML5toTouch = {
+    backends: [
+      { backend: HTML5Backend },
+      {
+        backend: TouchBackend,
+        preview: true,
+        transition: TouchTransition,
+      },
+    ],
+  };
   return (
-    <DndProvider
-      backend={isMobile ? TouchBackend : HTML5Backend}
-      options={{ enableMouseEvents: true }}
-    >
+    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
       <div className="p-4 overflow-y-auto h-full pb-40 custom-scrollbar">
         {menuItems.map((item, index) => (
           <SideMenuItem

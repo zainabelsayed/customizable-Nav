@@ -37,3 +37,11 @@ body {
   background: var(--background);
   font-family: "DM Sans", serif;
 }
+
+* {
+  touch-action: manipulation; /* Ensures touch gestures work */
+}
+
+.dragging {
+  touch-action: none;
+}
