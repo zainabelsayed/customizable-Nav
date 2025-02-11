@@ -5,6 +5,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import SideMenuItem from "./SideMenuItem";
 import { MenuItem } from "../types";
 import { useApi } from "@/hooks/useApi";
+import { useMobile } from "@/hooks/useMobile";
+import { TouchBackend } from "react-dnd-touch-backend";
 
 interface SideMenuListProps {
   isEdit: boolean;
@@ -20,6 +22,7 @@ const SideMenuList: React.FC<SideMenuListProps> = ({
   const [menuItems, setMenuItems] = React.useState<MenuItem[]>([]);
   const { data, request } = useApi<MenuItem[]>();
   const { request: saveNav } = useApi<MenuItem[]>();
+  const isMobile = useMobile();
 
   React.useEffect(() => {
     request("nav");
@@ -47,8 +50,11 @@ const SideMenuList: React.FC<SideMenuListProps> = ({
     setMenuItems(updatedItems);
   };
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="p-4 overflow-y-auto h-full lg:pb-40 pb-20 custom-scrollbar">
+    <DndProvider
+      backend={isMobile ? TouchBackend : HTML5Backend}
+      options={{ enableMouseEvents: true }}
+    >
+      <div className="p-4 overflow-y-auto h-full pb-40 custom-scrollbar">
         {menuItems.map((item, index) => (
           <SideMenuItem
             key={item?.id}

@@ -27,12 +27,9 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
   hide,
 }) => {
   const router = useRouter();
-
   const [title, setTitle] = React.useState(item.title);
   const [editTitle, setEditTitle] = React.useState(false);
-  const [isHidden, setIsHidden] = React.useState(
-    item.visible === false ? true : false
-  );
+  const [isHidden, setIsHidden] = React.useState(item.visible === false);
 
   const { request: trackRequest } = useApi<{
     id: number;
@@ -46,7 +43,7 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    canDrag: isEdit,
+    canDrag: isEdit, // Prevent dragging when not in edit mode
   });
 
   const [, drop] = useDrop({
@@ -77,28 +74,32 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (isEdit) return;
-    router.push(route);
+    if (!isEdit) {
+      router.push(route);
+    }
   };
 
   React.useEffect(() => {
     if (hide) setIsHidden(true);
   }, [hide]);
 
+  const nodeRef = React.useRef<HTMLDivElement | null>(null);
+
+  const handleRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isEdit) {
+        drag(drop(node));
+      }
+      nodeRef.current = node;
+    },
+    [isEdit, drag, drop]
+  );
+
   return (
-    <div
-      onClick={(e) => goToRoute(item.target, e)}
-      className="w-full cursor-pointer"
-    >
+    <div ref={handleRef} className="w-full cursor-pointer">
       <div
-        ref={
-          isEdit
-            ? (node) => {
-                drag(drop(node));
-              }
-            : null
-        }
-        className={`flex items-center justify-between  rounded-lg  ${
+        onClick={(e) => goToRoute(item.target, e)}
+        className={`flex items-center justify-between rounded-lg ${
           isDragging ? "opacity-50" : "opacity-100"
         } ${child ? "bg-transparent p-2" : "bg-gray-100/75 my-3 p-3"} ${
           isHidden && isEdit
@@ -126,7 +127,7 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
               }}
             />
           ) : (
-            <span className={`text-base text-gray-900`}>{title}</span>
+            <span className="text-base text-gray-900">{title}</span>
           )}
         </div>
         {isEdit && (
@@ -173,7 +174,7 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
       </div>
 
       {item.children && item.children.length > 0 && (
-        <div className="pl-6 ">
+        <div className="pl-6">
           {item.children.map((child, childIndex) => (
             <SideMenuItem
               key={child.id}
